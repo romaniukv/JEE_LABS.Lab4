@@ -6,7 +6,7 @@ import labwork3.entities.Category;
 import javax.faces.bean.ManagedBean;
 import java.util.List;
 
-@ManagedBean
+@ManagedBean(name = "catalog")
 public class CatalogController {
 
     public List<Category> getCategories() {

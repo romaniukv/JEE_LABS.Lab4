@@ -1,17 +1,14 @@
 <html xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-<head>
-    <title>Hello World</title>
-</head>
-<body>
-<f:view>
-    <h:form id="mainForm">
-        <h:panelGrid columns="2">
-            <h:outputLabel for="name" value="Please enter your name" />
-            <h:inputText id="name" value="sfgd" required="true"/>
-            <h:messages showDetail="true" showSummary="false"/>
-        </h:panelGrid>
-    </h:form>
-</f:view>
-</body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+        <title>Hello World</title>
+    </head>
+    <body>
+        <ul>
+            <ui:repeat var="category" value="#{catalog.categories}">
+                <li> #{category.categoryName} </li>
+            </ui:repeat>
+        </ul>
+    </body>
 </html>
