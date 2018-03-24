@@ -9,7 +9,7 @@ import java.util.List;
 @ManagedBean(name = "catalog")
 public class CatalogController {
 
-    public List<Category> getCategories() {
+    public List<Category> selectCategories() {
         return new DAO<Category, Integer>().selectAll(Category.class);
     }
 }

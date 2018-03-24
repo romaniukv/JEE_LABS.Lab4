@@ -5,10 +5,10 @@
         <title>Hello World</title>
     </head>
     <body>
-        <ul>
-            <ui:repeat var="category" value="#{catalog.categories}">
-                <li> #{category.categoryName} </li>
+            <ui:repeat var="category" value="#{ca.selectCategories}">
+                <h:button value="#{category.categoryName}">
+                    <f:ajax listener="#{CatalogCont}"/>
+                </h:button>
             </ui:repeat>
-        </ul>
     </body>
 </html>
