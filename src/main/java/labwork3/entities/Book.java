@@ -1,11 +1,12 @@
 package labwork3.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "BOOKS")
-public class Book {
+public class Book implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -32,6 +33,9 @@ public class Book {
 
     @ManyToMany(mappedBy = "books")
     private Set<Order> orders;
+
+    @Transient
+    private Boolean canEdit;
 
     public Book() {
 
@@ -137,6 +141,14 @@ public class Book {
 
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
+    }
+
+    public Boolean getCanEdit() {
+        return canEdit;
+    }
+
+    public void setCanEdit(Boolean canEdit) {
+        this.canEdit = canEdit;
     }
 
     @Override

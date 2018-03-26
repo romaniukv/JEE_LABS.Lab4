@@ -5,19 +5,30 @@ import labwork3.utils.JPAUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DAO<T, K> implements InterfaceDAO<T, K> {
 
+    private Class<T> tClass;
+
+    public DAO(Class<T> tClass) {
+        this.tClass = tClass;
+    }
+
     @Override
-    public List<T> selectAll(Class<T> tClass) {
+    public List<T> selectAll() {
         EntityManager entityManager = JPAUtils.getEntityManagerFactory().createEntityManager();
         String queryString = "FROM " + tClass.getSimpleName();
         TypedQuery<T> query = entityManager.createQuery(queryString, tClass);
-        return query.getResultList();
+        List<T> result = new ArrayList<>();
+        result = query.getResultList();
+        entityManager.close();
+        return result;
 
     }
 
+    @Override
     public void create(T entity) {
         EntityManager entityManager = null;
         try {
@@ -37,7 +48,8 @@ public class DAO<T, K> implements InterfaceDAO<T, K> {
         }
     }
 
-    public T select(Class<T> tClass, K key) {
+    @Override
+    public T select(K key) {
         EntityManager entityManager = null;
         try {
             entityManager = JPAUtils.getEntityManagerFactory().createEntityManager();
@@ -53,6 +65,7 @@ public class DAO<T, K> implements InterfaceDAO<T, K> {
         return null;
     }
 
+    @Override
     public void update(T entity) {
         EntityManager entityManager = null;
         try {
@@ -72,12 +85,15 @@ public class DAO<T, K> implements InterfaceDAO<T, K> {
         }
     }
 
-    public void delete(T entity) {
+    public void deleteByKey(K key) {
         EntityManager entityManager = null;
         try {
             entityManager = JPAUtils.getEntityManagerFactory().createEntityManager();
             entityManager.getTransaction().begin();
-            entityManager.remove(entity);
+            T entity = entityManager.find(tClass, key);
+            System.out.println(entity);
+            entityManager.remove(entityManager.merge(entity));
+            entityManager.flush();
             entityManager.getTransaction().commit();
         }
         catch (PersistenceException e) {

@@ -86,6 +86,27 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.7</version>
+        <executions>
+          <execution>
+            <id>Run URL in system browser.</id>
+            <phase>install</phase>
+            <configuration>
+              <target>
+                <exec executable="start" vmlauncher="false">
+                  <arg line="http://localhost:8080/javaxLab4"/>
+                </exec>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
 
   </build>

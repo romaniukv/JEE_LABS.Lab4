@@ -1,14 +1,16 @@
 package labwork3.dao;
 
+
 import java.util.List;
 
 public interface InterfaceDAO<T, K> {
 
-    List<T> selectAll(Class<T> tClass);
+    List<T> selectAll();
     void create(T entity);
-    T select(Class<T> tClass, K key);
+    T select(K key);
     void update(T entity);
-    void delete(T entity);
+    void deleteByKey(K key);
 
 
 }
+

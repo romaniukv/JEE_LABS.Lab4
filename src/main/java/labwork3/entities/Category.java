@@ -1,7 +1,7 @@
 package labwork3.entities;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "CATEGORIES")
@@ -11,12 +11,12 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "category")
+    @Column(name = "categoryName")
     private String categoryName;
 
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-    private Set<Book> bookList;
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+    private List<Book> bookList;
 
     public Category() {
 
@@ -43,7 +43,7 @@ public class Category {
     }
 
 
-    public Set<Book> getBookList() {
+    public List<Book> getBookList() {
         return bookList;
     }
 
