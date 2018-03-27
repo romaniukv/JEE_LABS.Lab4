@@ -44,10 +44,9 @@ public class CatalogController {
         return currentCategory;
     }
 
-    public String setCurrentCategory(Category currentCategory) {
+    public void setCurrentCategory(Category currentCategory) throws IOException {
         this.currentCategory = currentCategory;
-        return "/catalog.xhtml?faces-redirect=true";
-
+        FacesContext.getCurrentInstance().getExternalContext().redirect("catalog.xhtml");
     }
 
     public void setBook(Book book) {
