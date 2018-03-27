@@ -16,7 +16,7 @@
         </h:form>
         <h:form>
         <h:dataTable var="book" value="#{catalog.books}"
-        rendered="#{catalog.currentCategory != null}"
+                     rendered="#{catalog.currentCategory != null}"
                      styleClass="order-table"
                      headerClass="order-table-header"
                      rowClasses="order-table-odd-row,order-table-even-row">
@@ -28,9 +28,7 @@
 
                 <h:column>
                     <f:facet name="header">Id</f:facet>
-                    <h:inputText value = "#{book.id}"
-                                 size = "5" rendered = "#{book.canEdit}" />
-                    <h:outputText value="#{book.id}" rendered="#{not book.canEdit}"/>
+                    <h:outputText value="#{book.id}"/>
                 </h:column>
 
                 <h:column>
@@ -43,21 +41,27 @@
                 <h:column>
                     <f:facet name="header">Author</f:facet>
                     <h:inputText value = "#{book.author}"
-                                 size = "20" rendered = "#{book.canEdit}" />
+                                 size = "20" rendered = "#{book.canEdit}" validatorMessage="Input correct author!">
+                        <f:validateRegex pattern="^([A-Z]{1}[a-z]+\s?)+$"/>
+                    </h:inputText>
                     <h:outputText value="#{book.author}" rendered="#{not book.canEdit}"/>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Year</f:facet>
                     <h:inputText value = "#{book.year}"
-                                 size = "5" rendered = "#{book.canEdit}" />
+                                 size = "5" rendered = "#{book.canEdit}"
+                                 validatorMessage="Input correct year!"
+                                 converterMessage="Input correct year!">
+                        <f:validateLength minimum="3" maximum="4"/>
+                    </h:inputText>
                     <h:outputText value="#{book.year}" rendered="#{not book.canEdit}"/>
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Price</f:facet>
                     <h:inputText value = "#{book.price}"
-                                 size = "10" rendered = "#{book.canEdit}" />
+                                 size = "10" rendered = "#{book.canEdit}" converterMessage="Input correct price!"/>
                     <h:outputText value="#{book.price} $" rendered="#{not book.canEdit}"/>
                 </h:column>
 
