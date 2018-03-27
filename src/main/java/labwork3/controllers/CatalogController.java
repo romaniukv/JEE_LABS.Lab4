@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @ManagedBean(name = "catalog")
@@ -16,11 +17,18 @@ public class CatalogController {
 
     private DAO<Book, Integer> bookDAO = new DAO<>(Book.class);
 
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
     private Book book;
 
-    private Category currentCategory;
+    private List<Book> books = new ArrayList<>();
 
-    private List<Book> books;
+    public void showAll() throws IOException {
+        books = bookDAO.selectAll();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("catalog.xhtml");
+    }
 
     public void editBook() throws IOException {
         bookDAO.update(book);
@@ -40,21 +48,12 @@ public class CatalogController {
         return new DAO<Category, Integer>(Category.class).selectAll();
     }
 
-    public Category getCurrentCategory() {
-        return currentCategory;
-    }
-
-    public void setCurrentCategory(Category currentCategory) throws IOException {
-        this.currentCategory = currentCategory;
-        FacesContext.getCurrentInstance().getExternalContext().redirect("catalog.xhtml");
-    }
 
     public void setBook(Book book) {
         this.book = book;
     }
 
     public List<Book> getBooks() {
-        books = currentCategory.getBookList();
         return books;
     }
 
