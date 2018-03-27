@@ -12,6 +12,8 @@ public class Test {
         Book book = new Book(new DAO<Category, Integer>(Category.class).select(4),"The Picture of Dorian Gray", "Oscar Wilde", 1890,
                 500, 250, "Some description", true,  "dorianGray.jpg");
         bookDAO.create(book);
+        book.setCategory(new DAO<Category, Integer>(Category.class).select(6));
+        bookDAO.update(book);
         JPAUtils.shutdown();
 
 

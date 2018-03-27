@@ -7,6 +7,8 @@ import labwork3.entities.Category;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +18,14 @@ import java.util.List;
 public class CatalogController {
 
     private DAO<Book, Integer> bookDAO = new DAO<>(Book.class);
+    private Book book;
+    private int newCategoryId;
+
+
 
     public void setBooks(List<Book> books) {
         this.books = books;
     }
-
-    private Book book;
 
     private List<Book> books = new ArrayList<>();
 
@@ -31,6 +35,9 @@ public class CatalogController {
     }
 
     public void editBook() throws IOException {
+        //System.out.println(editedCategory);
+        //System.out.println(new DAO<Category, Integer>(Category.class).select(editedCategory.getId()));
+        book.setCategory(new DAO<Category, Integer>(Category.class).select(newCategoryId));
         bookDAO.update(book);
         book.setCanEdit(false);
         FacesContext.getCurrentInstance().getExternalContext().redirect("catalog.xhtml");
@@ -56,5 +63,14 @@ public class CatalogController {
     public List<Book> getBooks() {
         return books;
     }
+
+
+
+
+
+    public void changeCategory(ValueChangeEvent event) {
+        newCategoryId = Integer.valueOf(event.getNewValue().toString());
+    }
+
 
 }
