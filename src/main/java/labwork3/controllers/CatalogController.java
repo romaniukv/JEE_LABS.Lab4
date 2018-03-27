@@ -35,8 +35,6 @@ public class CatalogController {
     }
 
     public void editBook() throws IOException {
-        //System.out.println(editedCategory);
-        //System.out.println(new DAO<Category, Integer>(Category.class).select(editedCategory.getId()));
         book.setCategory(new DAO<Category, Integer>(Category.class).select(newCategoryId));
         bookDAO.update(book);
         book.setCanEdit(false);
