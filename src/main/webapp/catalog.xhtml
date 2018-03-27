@@ -1,54 +1,97 @@
 <html xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
-    <h:head>
-        <title>Hello World</title>
-        <h:outputStylesheet library="css" name="topMenu.css"  />
-    </h:head>
-    <h:body>
-        <ui:include src="topMenu.xhtml" />
-        <div class="main">
-            <h:form>
-                <ui:repeat var="category" value="#{catalog.categories}">
-                    <h:commandLink value="#{category.categoryName}" actionListener="#{catalog.setCurrentCategory(category)}"/>
-                    <br/>
-                </ui:repeat>
-            </h:form>
-
-            <ui:repeat var="book" value="#{catalog.currentCategory.bookList}">
-                <h:graphicImage library="images" name="#{book.image}" alt="#{book.name}" height="60" width="25"/>
-                <table border="0">
-                    <tr>
-                        <td>Name: </td>
-                        <td>${book.name}</td>
-                    </tr>
-                    <tr>
-                        <td>Author: </td>
-                        <td>${book.author}</td>
-                    </tr>
-                    <tr>
-                        <td>Year: </td>
-                        <td>${book.year}</td>
-                    </tr>
-                    <tr>
-                        <td>Price: </td>
-                        <td>${book.price} $</td>
-                    </tr>
-                    <tr>
-                        <td>Description: </td>
-                        <td>${book.description}</td>
-                    </tr>
-                    <tr>
-                        <td>Available: </td>
-                        <td>${book.available ? "Yes" : "No"}</td>
-                    </tr>
-                </table>
-
-                <h:form>
-                    <h:commandLink value="Edit" action="edit"/>
-                    <h:commandLink value="Remove" actionListener="#{catalog.removeBook(book)}"/>
-                </h:form>
-                <hr/>
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Hello World</title>
+    <h:outputStylesheet library="css" name="topMenu.css"  />
+    <h:outputStylesheet library="css" name="table-style.css"  />
+</h:head>
+<h:body>
+    <ui:include src="topMenu.xhtml" />
+    <div class="main">
+        <h:form>
+            <ui:repeat var="category" value="#{catalog.categories}">
+                <h:commandLink value="#{category.categoryName}" actionListener="#{catalog.setCurrentCategory(category)}"/>
+                <br/>
             </ui:repeat>
-        </div>
-    </h:body>
+        </h:form>
+        <h:form>
+        <h:dataTable var="book" value="#{catalog.books}"
+        rendered="#{catalog.currentCategory != null}"
+                     styleClass="order-table"
+                     headerClass="order-table-header"
+                     rowClasses="order-table-odd-row,order-table-even-row">
+
+                <h:column>
+                    <f:facet name="header">Image</f:facet>
+                    <h:graphicImage library="images" name="#{book.image}" alt="#{book.name}" height="128" width="85"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Id</f:facet>
+                    <h:inputText value = "#{book.id}"
+                                 size = "5" rendered = "#{book.canEdit}" />
+                    <h:outputText value="#{book.id}" rendered="#{not book.canEdit}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:inputText value = "#{book.name}"
+                                 size = "20" rendered = "#{book.canEdit}" />
+                    <h:outputText value="#{book.name}" rendered="#{not book.canEdit}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Author</f:facet>
+                    <h:inputText value = "#{book.author}"
+                                 size = "20" rendered = "#{book.canEdit}" />
+                    <h:outputText value="#{book.author}" rendered="#{not book.canEdit}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Year</f:facet>
+                    <h:inputText value = "#{book.year}"
+                                 size = "5" rendered = "#{book.canEdit}" />
+                    <h:outputText value="#{book.year}" rendered="#{not book.canEdit}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Price</f:facet>
+                    <h:inputText value = "#{book.price}"
+                                 size = "10" rendered = "#{book.canEdit}" />
+                    <h:outputText value="#{book.price} $" rendered="#{not book.canEdit}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Description</f:facet>
+                    <h:inputText value = "#{book.description}"
+                                 size = "20" rendered = "#{book.canEdit}" />
+                    <h:outputText value="#{book.description}" rendered="#{not book.canEdit}"/>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Available</f:facet>
+                    <h:inputText value = "#{book.available}"
+                                 size = "20" rendered = "#{book.canEdit}" />
+                    <h:outputText rendered="#{not book.canEdit}">#{book.available ? "Yes" : "No"}</h:outputText>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Edit</f:facet>
+                    <h:commandButton value="Edit" action="#{book.setCanEdit(true)}" rendered="#{not book.canEdit}"/>
+                    <h:commandButton value="Save" action="#{catalog.editBook}" rendered="#{book.canEdit}">
+                        <f:setPropertyActionListener target="#{catalog.book}" value="#{book}" />
+                    </h:commandButton>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Remove</f:facet>
+                        <h:commandButton ajax="false" type="submit" value="Remove" action="#{catalog.removeBook}">
+                            <f:setPropertyActionListener target="#{catalog.book}" value="#{book}" />
+                        </h:commandButton>
+                </h:column>
+
+        </h:dataTable>
+    </h:form>
+    </div>
+</h:body>
 </html>

@@ -25,14 +25,14 @@ public class CatalogController {
     public void editBook() throws IOException {
         bookDAO.update(book);
         book.setCanEdit(false);
-        //FacesContext.getCurrentInstance().getExternalContext().redirect("catalog2.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("catalog.xhtml");
     }
 
     public void removeBook() throws IOException {
         System.out.println(book);
         books.remove(book);
         bookDAO.deleteByKey(book.getId());
-        FacesContext.getCurrentInstance().getExternalContext().redirect("catalog2.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("catalog.xhtml");
 
     }
 
@@ -46,7 +46,7 @@ public class CatalogController {
 
     public String setCurrentCategory(Category currentCategory) {
         this.currentCategory = currentCategory;
-        return "/catalog2.xhtml?faces-redirect=true";
+        return "/catalog.xhtml?faces-redirect=true";
 
     }
 
